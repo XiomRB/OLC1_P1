@@ -2,9 +2,9 @@
 package olc1_ptc1_201500332;
 
 public class Token {
-    int tipo;
-    String lexema;
-    int linea;
+    private int tipo;
+    private String lexema;
+    private int linea;
 
     public Token(int tipo, String lexema, int linea) {
         this.tipo = tipo;

@@ -8,7 +8,7 @@ package vista;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import olc1_ptc1_201500332.Analizador;
+import olc1_ptc1_201500332.AnalizadorLex;
 import olc1_ptc1_201500332.Archivo;
 
 /**
@@ -20,7 +20,7 @@ public class Ventana extends javax.swing.JFrame {
     JFileChooser choose = new JFileChooser();
     File archivo;
     Archivo arch = new Archivo();
-    Analizador analizador = new Analizador();
+    AnalizadorLex analizador = new AnalizadorLex();
     public Ventana() {
         initComponents();
         

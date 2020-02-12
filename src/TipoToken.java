@@ -5,7 +5,7 @@ public enum TipoToken {
     ID,//3
     R_CONJ,//4
     CONJ,//5
-    ASTERISC,//6O
+    ASTERISC,//6
     DUDA,//7
     MAS,//8
     MENOS,//9
@@ -17,8 +17,8 @@ public enum TipoToken {
     PORCENT,//15
     NUMERO,//16
     DOS_PUNTOS,//17
-    PUNTO_COMA,//118
+    PUNTO_COMA,//18
     CADENA,//19
     COMENTLINEA,//20
-    COMENTMULT//21
+    COMENTMULT,//21
 }

@@ -3,7 +3,7 @@ package olc1_ptc1_201500332;
 import java.util.ArrayList;
 import javax.swing.JTextArea;
 
-public class Analizador {
+public class AnalizadorLex {
     public ArrayList<Token> tokens = new ArrayList();
     char caracter;
     int estado = 0;
@@ -221,6 +221,7 @@ public class Analizador {
                             estado = 8;
                             tok += caracter;
                         }else analisis = mensajeError(i, caracter);
+                        break;
             }
                 j++;
         }

@@ -4,11 +4,10 @@ import java.util.ArrayList;
 
 public class Expresion {
     public String id;
-    public ArrayList<String> expresion;
+    public String exp;
 
-    public Expresion(String id) {
+    public Expresion(String id, String exp) {
         this.id = id;
-        this.expresion = new ArrayList();
-    }
-    
+        this.exp = exp;
+    }    
 }
