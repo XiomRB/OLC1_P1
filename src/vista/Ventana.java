@@ -9,6 +9,7 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import olc1_ptc1_201500332.AnalizadorLex;
+import olc1_ptc1_201500332.AnalizadorSint;
 import olc1_ptc1_201500332.Archivo;
 
 /**
@@ -21,6 +22,7 @@ public class Ventana extends javax.swing.JFrame {
     File archivo;
     Archivo arch = new Archivo();
     AnalizadorLex analizador = new AnalizadorLex();
+    AnalizadorSint sintac = new AnalizadorSint();
     public Ventana() {
         initComponents();
         
@@ -178,7 +180,15 @@ public class Ventana extends javax.swing.JFrame {
 
     private void btanalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btanalizarActionPerformed
         String analisis = analizador.analizar(jtxtconsola);
-        jtxterror.setText(analisis);
+        if(!analizador.error){
+            analisis =  sintac.obtenerDatos(analizador.tokens);
+            jtxterror.setText(analisis);
+        }else{
+            JOptionPane.showMessageDialog(null, analisis);
+            for (int i = 0; i < analizador.tokens.size(); i++) {
+                jtxterror.setText(jtxterror.getText() + analizador.tokens.get(i).getLexema() + " ") ;
+            }
+        }
     }//GEN-LAST:event_btanalizarActionPerformed
 
     private void btnlimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnlimpiarActionPerformed

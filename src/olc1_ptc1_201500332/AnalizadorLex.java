@@ -7,10 +7,13 @@ public class AnalizadorLex {
     public ArrayList<Token> tokens = new ArrayList();
     char caracter;
     int estado = 0;
-    boolean error = false;
+     public boolean error = false;
     String tok = "";
     
     public String analizar(JTextArea texto){
+        error = false;
+        estado = 0;
+        tok = "";
         String analisis = "";
         tokens.clear();
         String archivo = texto.getText() + "#";
@@ -22,7 +25,6 @@ public class AnalizadorLex {
                 caracter = archivo.charAt(j);
                 switch(estado){
                     case 0:
-                        System.out.println(caracter + "estado: " + String.valueOf(estado));
                         if(Character.isLetter(caracter)){
                             estado = 1;
                             tok += caracter;
@@ -44,12 +46,9 @@ public class AnalizadorLex {
                         }else if(caracter == '/'){
                             estado = 3;
                             tok += caracter;                            
-                        }else if(Character.isWhitespace(caracter) || caracter == '\t' ||caracter == '\r'){
+                        }else if(Character.isWhitespace(caracter) || caracter == '\t' || caracter == '\r' || caracter == '\n'){
                             estado = 0;
-                        }else if(caracter == '\n'){
-                            estado = 0;
-                            i++;
-                        } else if(caracter == '#' && total_caract-1 == j){
+                        }else if(caracter == '#' && total_caract-1 == j){
                             analisis = "Archivo analizado";
                         }                      
                         else if(caracter != ','){
@@ -60,11 +59,16 @@ public class AnalizadorLex {
                         }
                         break;
                     case 1:
-                        System.out.println(caracter + "estado: " + String.valueOf(estado));
                         if(Character.isLetterOrDigit(caracter) || caracter == '_'){
                             estado = 1;
                             tok += caracter;
-                        }else {
+                        }else if(caracter == ','){
+                            estado = 13;
+                            tok += caracter;
+                        }else if(caracter == '~'){
+                            estado = 14;
+                            tok += caracter;
+                        }else{
                             if(tok.equalsIgnoreCase("conj")) validarToken(4, i, tok, j);
                             else {
                                 validarToken(3, i, tok, j);
@@ -73,29 +77,24 @@ public class AnalizadorLex {
                         }
                         break;
                     case 2:
-                        System.out.println(caracter + "estado: " + String.valueOf(estado));
                         if(caracter != '"'){
                             estado = 9;
                             tok += caracter;
                         }else analisis = mensajeError(i, caracter);
                         break;
                     case 3:
-                        System.out.println(caracter + "estado: " + String.valueOf(estado));
                         if(caracter == '/'){
                             estado = 10;
                             tok += caracter;
                         }else analisis = mensajeError(i, caracter);
                         break;
                     case 4:
-                        
-                        System.out.println(caracter + "estado: " + String.valueOf(estado));
                         if(caracter == '!'){
                             estado = 11;
                             tok += caracter;
                         }else analisis = mensajeError(i, caracter);
                         break;
                     case 5:
-                        System.out.println(caracter + "estado: " + String.valueOf(estado));
                         if(Character.isDigit(caracter)){
                             estado = 6;
                             tok += caracter;
@@ -105,12 +104,17 @@ public class AnalizadorLex {
                         }
                         break;
                     case 6:
-                        System.out.println(caracter + "estado: " + String.valueOf(estado));
                         if(Character.isDigit(caracter)){
                             estado = 6;
                             tok += caracter;
                         }else if(caracter == '.'){
                             estado = 12;
+                            tok += caracter;
+                        } else if(caracter == ','){
+                            estado = 13;
+                            tok += caracter;
+                        }else if(caracter == '~'){
+                            estado = 14;
                             tok += caracter;
                         }else {
                             validarToken(16, i, tok, j);
@@ -118,17 +122,15 @@ public class AnalizadorLex {
                         }
                         break;
                     case 7:
-                        System.out.println(caracter + "estado: " + String.valueOf(estado));
                         if(caracter == ','){
                             estado = 13;
                             tok += caracter;
-                        } else if(caracter == '-'){
+                        } else if(caracter == '~'){
                             estado = 14;
                             tok += caracter;
                         }else analisis = mensajeError(i, caracter);
                         break;
                     case 8:
-                        System.out.println(caracter + "estado: " + String.valueOf(estado));
                         if(tok.length()==1){
                             if(tok.equals(">")) validarToken(12, i, tok, j);
                             else if(tok.equals("."))validarToken(11, i, tok, j);
@@ -149,7 +151,6 @@ public class AnalizadorLex {
                         j--;
                         break;
                     case 9:
-                        System.out.println(caracter + "estado: " + String.valueOf(estado));
                         if(caracter != '"'){
                             estado = 9;
                             tok += caracter;
@@ -159,7 +160,6 @@ public class AnalizadorLex {
                         }
                         break;
                     case 10:
-                        System.out.println(caracter + "estado: " + String.valueOf(estado));
                         if(caracter != '\n'){
                             estado = 10;
                             tok += caracter;
@@ -169,7 +169,6 @@ public class AnalizadorLex {
                         }
                         break;
                     case 11:
-                        System.out.println(caracter + "estado: " + String.valueOf(estado));
                         if(caracter != '!'){
                             estado = 11;
                             tok += caracter;
@@ -178,35 +177,30 @@ public class AnalizadorLex {
                             tok += caracter;
                         }break;
                     case 12:
-                        System.out.println(caracter + "estado: " + String.valueOf(estado));
                         if(Character.isDigit(caracter)){
                             estado = 6;
                             tok += caracter;
                         }else analisis = mensajeError(i, caracter);
                         break;
                     case 13:
-                        System.out.println(caracter + "estado: " + String.valueOf(estado));
                         if(caracter != ','){
                             estado = 16;
                             tok += caracter;
                         }else analisis = mensajeError(i, caracter);
                         break;
                     case 14:
-                        System.out.println(caracter + "estado: " + String.valueOf(estado));
-                        if(caracter != '-'){
+                        if(caracter != '~'){
                             estado = 17;
                             tok += caracter;
                         }else analisis = mensajeError(i, caracter);
                         break;
                     case 15:
-                        System.out.println(caracter + "estado: " + String.valueOf(estado));
                         if(caracter == '>'){
                             estado = 8;
                             tok += caracter;
                         }else analisis = mensajeError(i, caracter);
                         break;
                     case 16:
-                        System.out.println(caracter + "estado: " + String.valueOf(estado));
                         if(caracter == ','){
                             estado = 13;
                             tok += caracter;
@@ -216,7 +210,6 @@ public class AnalizadorLex {
                         }else analisis = mensajeError(i, caracter);
                         break;
                     case 17:
-                        System.out.println(caracter + "estado: " + String.valueOf(estado));
                         if(caracter == ';'){
                             estado = 8;
                             tok += caracter;
