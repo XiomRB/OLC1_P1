@@ -36,10 +36,11 @@ public class AnalizadorSint {
                             i += 4;
                         }else{
                             i += 3;
-                            defexpresion.add(new DefExpresion("."));
+                            defexpresion.add(new DefExpresion(".",11));
                             while(i < tokens.size() && !mal && tokens.get(i).getTipo() != 18){                             
                                 definirArbol(defexpresion.get(defexpresion.size()-1).hijos, tokens);
                             }
+                            defexpresion.get(defexpresion.size()-1).hijos.add(new DefExpresion("#",22));
                         }
                     }else mensajeError(tokens.get(i).getLinea());                
                 } else mensajeError(tokens.get(i).getLinea());
@@ -59,23 +60,23 @@ public class AnalizadorSint {
     public ArrayList definirArbol(ArrayList<DefExpresion> raiz,ArrayList<Token> tokens){
         if(!mal){
             if(tokens.get(i).getTipo()== 19){
-                raiz.add(new DefExpresion(tokens.get(i).getLexema())); //agrega la cadena al nodo raiz
+                raiz.add(new DefExpresion(tokens.get(i).getLexema(),19)); //agrega la cadena al nodo raiz
                 i++;
             }else if(tokens.get(i).getTipo() == 1 && tokens.get(i+1).getTipo() == 3 && tokens.get(i+2).getTipo() == 2){ //corrobora que sea un conjunto
                 int j = encontrarConj(tokens.get(i+1).getLexema());
                 if(j != -1){
-                    raiz.add(new DefExpresion(conjunto.get(j).getConjunto())); // agrega el conjunto al nodo raiz
+                    raiz.add(new DefExpresion(conjunto.get(j).getConjunto(),5)); // agrega el conjunto al nodo raiz
                 i += 3;
                 }else {
                     mensaje = "Conjunto no definido";
                     mal = true;
                 }           
             }else if(tokens.get(i).getTipo() == 6 || tokens.get(i).getTipo() == 7 || tokens.get(i).getTipo() == 8){
-                raiz.add(new DefExpresion(tokens.get(i).getLexema())); //agrega + o * o ? al nodo raiz
+                raiz.add(new DefExpresion(tokens.get(i).getLexema(),tokens.get(i).getTipo())); //agrega + o * o ? al nodo raiz
                 i++;
                 definirArbol(raiz.get(raiz.size()-1).hijos, tokens); // agrega 
             }else if(tokens.get(i).getTipo() == 10 || tokens.get(i).getTipo() == 11){
-                raiz.add(new DefExpresion(tokens.get(i).getLexema())); //agrega . o | al nodo raiz
+                raiz.add(new DefExpresion(tokens.get(i).getLexema(),tokens.get(i).getTipo())); //agrega . o | al nodo raiz
                 i++;
                 definirArbol(raiz.get(raiz.size()-1).hijos, tokens); // agrega el primer nodo de . o de |
                 definirArbol(raiz.get(raiz.size()-1).hijos, tokens); // agrega el segundo nodo de . o de |

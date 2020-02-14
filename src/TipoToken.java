@@ -21,4 +21,5 @@ public enum TipoToken {
     CADENA,//19
     COMENTLINEA,//20
     COMENTMULT,//21
+    comodin//22
 }
