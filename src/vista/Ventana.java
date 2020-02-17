@@ -6,11 +6,16 @@
 package vista;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import olc1_ptc1_201500332.AnalizadorLex;
 import olc1_ptc1_201500332.AnalizadorSint;
 import olc1_ptc1_201500332.Archivo;
+import olc1_ptc1_201500332.Siguiente;
 
 /**
  *
@@ -23,6 +28,7 @@ public class Ventana extends javax.swing.JFrame {
     Archivo arch = new Archivo();
     AnalizadorLex analizador = new AnalizadorLex();
     AnalizadorSint sintac = new AnalizadorSint();
+    Siguiente siguiente = new Siguiente("", 0);
     public Ventana() {
         initComponents();
         
@@ -180,9 +186,31 @@ public class Ventana extends javax.swing.JFrame {
 
     private void btanalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btanalizarActionPerformed
         String analisis = analizador.analizar(jtxtconsola);
+        String grafconj = "";
+        String grafexp = "";
+        String grafsig = "";
         if(!analizador.error){
             analisis =  sintac.obtenerDatos(analizador.tokens);
             jtxterror.setText(analisis);
+            Conjunto conj = new Conjunto("", "");
+            DefExpresion def = new DefExpresion("", 0);
+            if(!sintac.mal){
+                grafconj = conj.imprimirConjuntos(sintac.conjunto);
+                def.terminarPosiciones(sintac.defexpresion);
+                System.out.println("hecho");
+                try {
+                    arch.generarGrafica(grafconj,"Conjuntos");
+                    for (int i = 0; i < sintac.defexpresion.size(); i++) {                        
+                        grafexp = def.dibujarExpresion(sintac.defexpresion.get(i));
+                        arch.generarGrafica(grafexp, sintac.expre.get(i).toString());
+                        siguiente.darSiguienteRaiz(sintac.defexpresion.get(i),sintac.defexpresion.get(i).sig);
+                        grafsig = siguiente.dibujarSiguientes(sintac.defexpresion.get(i).sig);
+                        arch.generarGrafica(grafsig, sintac.expre.get(i).toString() + " Sigs");
+                    }
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage());
+                }
+            }
         }else{
             JOptionPane.showMessageDialog(null, analisis);
             for (int i = 0; i < analizador.tokens.size(); i++) {

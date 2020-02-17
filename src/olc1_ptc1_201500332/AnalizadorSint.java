@@ -5,7 +5,7 @@ import vista.Conjunto;
 import vista.DefExpresion;
 
 public class AnalizadorSint {
-
+    public ArrayList expre = new ArrayList();
     public ArrayList<DefExpresion> defexpresion = new ArrayList();
     public ArrayList<Conjunto> conjunto = new ArrayList();
     public ArrayList<Expresion> expresion = new ArrayList();
@@ -17,6 +17,7 @@ public class AnalizadorSint {
         defexpresion.clear();
         conjunto.clear();
         expresion.clear();
+        expre.clear();
         mensaje = "";
         int tipo = 0;
         i = 0;
@@ -32,9 +33,10 @@ public class AnalizadorSint {
                 } else if (tokens.get(i + 1).getTipo() == 9) {//corroborar si viene un guion
                     if(tokens.get(i + 2).getTipo() == 12){//comprobar que venga >
                         if(tokens.get(i + 3).getTipo() == 5){//comprobar que venga una definicion de conjunto
-                            conjunto.add(new Conjunto(tokens.get(i).getLexema(), tokens.get(i+3).getLexema()));
+                            conjunto.add(new Conjunto(tokens.get(i).getLexema(), tokens.get(i+3).getLexema().substring(0,tokens.get(i+3).getLexema().length()-1)));
                             i += 4;
                         }else{
+                            expre.add(tokens.get(i).getLexema());
                             i += 3;
                             defexpresion.add(new DefExpresion(".",11));
                             while(i < tokens.size() && !mal && tokens.get(i).getTipo() != 18){                             
@@ -46,7 +48,7 @@ public class AnalizadorSint {
                 } else mensajeError(tokens.get(i).getLinea());
                 }else i++;
             }
-            if(!mal) mensaje = "Tablas creadas";
+            if(!mal) mensaje = "Analisis realizado";
             return mensaje;
         }
     
