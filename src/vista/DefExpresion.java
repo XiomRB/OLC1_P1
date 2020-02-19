@@ -11,7 +11,7 @@ public class DefExpresion {
     public  ArrayList lp = new ArrayList();
     private boolean anulable = false;
     public ArrayList<DefExpresion> hijos = new ArrayList();
-    public ArrayList<Siguiente> sig = new ArrayList();
+    public ArrayList<Siguiente> hojas = new ArrayList();
     int  p = 0;
     
     public DefExpresion(String id,int tipo) {
@@ -60,19 +60,19 @@ public class DefExpresion {
                     exp.hijos.get(i).fp.add(p); //colocar p como first position
                     exp.hijos.get(i).lp.add(p); //colocar p como last position
                     exp.hijos.get(i).setAnulable(false); //no anulable
-                    sig.add(new Siguiente(exp.hijos.get(i).getId().substring(1,exp.hijos.get(i).getId().length()-1),(int)exp.hijos.get(i).fp.get(0)));
+                    hojas.add(new Siguiente(exp.hijos.get(i).getId().substring(1,exp.hijos.get(i).getId().length()-1),(int)exp.hijos.get(i).fp.get(0)));
                     p++;
                 }else if(exp.hijos.get(i).getTipo()==5){ //si viene un conjunto
                     exp.hijos.get(i).fp.add(p);//colocar p como first position
                     exp.hijos.get(i).lp.add(p);//colocar p como last position
                     exp.hijos.get(i).setAnulable(false);//no anulable
-                    sig.add(new Siguiente(exp.hijos.get(i).getId(),(int)exp.hijos.get(i).fp.get(0)));
+                    hojas.add(new Siguiente(exp.hijos.get(i).getId(),(int)exp.hijos.get(i).fp.get(0)));
                     p++;
                 }else if(exp.hijos.get(i).getTipo()==22){ //si viene #
                     exp.hijos.get(i).lp.add(p); //colocar p como last position
                     exp.hijos.get(i).fp.add(p); //colocar p como first position
                     exp.setAnulable(false); //no anulable
-                    sig.add(new Siguiente(exp.hijos.get(i).getId(),(int)exp.hijos.get(i).fp.get(0)));
+                    hojas.add(new Siguiente(exp.hijos.get(i).getId(),(int)exp.hijos.get(i).fp.get(0)));
                 } else if(exp.hijos.get(i).getTipo()== 6 ||exp.hijos.get(i).getTipo()== 7  || exp.hijos.get(i).getTipo()== 8 ){//si viene un *, ? o +
                     definirPosiciones(exp.hijos.get(i), p); //buscas sus hojas
                     for (int j = 0; j < exp.hijos.get(i).hijos.get(0).fp.size(); j++) { //solo tiene una hoja, por lo que sus first position igual a los de su hoja
@@ -139,9 +139,9 @@ public class DefExpresion {
     public void terminarPosiciones(ArrayList<DefExpresion> exp){
         if(!exp.isEmpty()){            
             for (int i = 0; i < exp.size(); i++) {
-                sig.clear();
+                hojas.clear();
                 definirPosiciones(exp.get(i), 0);
-                exp.get(i).sig = (ArrayList) sig.clone();
+                exp.get(i).hojas = (ArrayList) hojas.clone();
                 if(!exp.get(i).hijos.isEmpty()){
                     if(exp.get(i).hijos.get(0).isAnulable()){
                         for (int j = 0; j < exp.get(i).hijos.get(0).fp.size(); j++) {

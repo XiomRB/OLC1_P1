@@ -203,8 +203,8 @@ public class Ventana extends javax.swing.JFrame {
                     for (int i = 0; i < sintac.defexpresion.size(); i++) {                        
                         grafexp = def.dibujarExpresion(sintac.defexpresion.get(i));
                         arch.generarGrafica(grafexp, sintac.expre.get(i).toString());
-                        siguiente.darSiguienteRaiz(sintac.defexpresion.get(i),sintac.defexpresion.get(i).sig);
-                        grafsig = siguiente.dibujarSiguientes(sintac.defexpresion.get(i).sig);
+                        siguiente.darSiguienteRaiz(sintac.defexpresion.get(i),sintac.defexpresion.get(i).hojas);
+                        grafsig = siguiente.dibujarSiguientes(sintac.defexpresion.get(i).hojas);
                         arch.generarGrafica(grafsig, sintac.expre.get(i).toString() + " Sigs");
                     }
                 } catch (IOException ex) {

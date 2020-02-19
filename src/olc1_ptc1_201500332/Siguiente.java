@@ -53,8 +53,8 @@ public class Siguiente {
         darSiguientesHojas(exp,sig);
         if(!exp.hijos.isEmpty()){
             for (int j = 0; j < exp.hijos.get(0).lp.size(); j++) {
-                exp.sig.get((int)exp.hijos.get(0).lp.get(j)).siguientes.addAll(exp.hijos.get(1).fp); // le da como siguientes a la lp del hijo 0 los fp del hijo 1
-                Collections.sort(exp.sig.get((int)exp.hijos.get(0).lp.get(j)).siguientes);
+                exp.hojas.get((int)exp.hijos.get(0).lp.get(j)).siguientes.addAll(exp.hijos.get(1).fp); // le da como siguientes a la lp del hijo 0 los fp del hijo 1
+                Collections.sort(exp.hojas.get((int)exp.hijos.get(0).lp.get(j)).siguientes);
             }
         }
     }
