@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package vista;
 
 import java.io.File;
@@ -16,6 +12,7 @@ import olc1_ptc1_201500332.AnalizadorLex;
 import olc1_ptc1_201500332.AnalizadorSint;
 import olc1_ptc1_201500332.Archivo;
 import olc1_ptc1_201500332.Siguiente;
+import olc1_ptc1_201500332.Transicion;
 
 /**
  *
@@ -29,6 +26,7 @@ public class Ventana extends javax.swing.JFrame {
     AnalizadorLex analizador = new AnalizadorLex();
     AnalizadorSint sintac = new AnalizadorSint();
     Siguiente siguiente = new Siguiente("", 0);
+    Transicion trans = new Transicion();
     public Ventana() {
         initComponents();
         
@@ -189,6 +187,7 @@ public class Ventana extends javax.swing.JFrame {
         String grafconj = "";
         String grafexp = "";
         String grafsig = "";
+        String graftrans = "";
         if(!analizador.error){
             analisis =  sintac.obtenerDatos(analizador.tokens);
             jtxterror.setText(analisis);
@@ -197,15 +196,19 @@ public class Ventana extends javax.swing.JFrame {
             if(!sintac.mal){
                 grafconj = conj.imprimirConjuntos(sintac.conjunto);
                 def.terminarPosiciones(sintac.defexpresion);
-                System.out.println("hecho");
                 try {
                     arch.generarGrafica(grafconj,"Conjuntos");
-                    for (int i = 0; i < sintac.defexpresion.size(); i++) {                        
+                    for (int i = 0; i < sintac.defexpresion.size(); i++) {
+                        sintac.transiciones.clear();
                         grafexp = def.dibujarExpresion(sintac.defexpresion.get(i));
                         arch.generarGrafica(grafexp, sintac.expre.get(i).toString());
                         siguiente.darSiguienteRaiz(sintac.defexpresion.get(i),sintac.defexpresion.get(i).hojas);
                         grafsig = siguiente.dibujarSiguientes(sintac.defexpresion.get(i).hojas);
                         arch.generarGrafica(grafsig, sintac.expre.get(i).toString() + " Sigs");
+                        sintac.transiciones = trans.darEstado(sintac.defexpresion.get(i));
+                        trans.darTransicion(sintac.transiciones, sintac.defexpresion.get(i).hojas);
+                        graftrans = trans.dibujarTransicion(sintac.transiciones, sintac.defexpresion.get(i).hojas);
+                        arch.generarGrafica(graftrans, sintac.expre.get(i) + "Transiciones");
                     }
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(null, ex.getMessage());

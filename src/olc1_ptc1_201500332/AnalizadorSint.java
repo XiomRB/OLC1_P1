@@ -9,6 +9,7 @@ public class AnalizadorSint {
     public ArrayList<DefExpresion> defexpresion = new ArrayList();
     public ArrayList<Conjunto> conjunto = new ArrayList();
     public ArrayList<Expresion> expresion = new ArrayList();
+    public ArrayList<Transicion> transiciones = new ArrayList();
     public boolean mal = false;
     public int i;
     String mensaje = "";
