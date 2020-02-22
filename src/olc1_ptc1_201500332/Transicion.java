@@ -219,4 +219,60 @@ public class Transicion {
         }
         return cadena;
     }
+    
+    public String reconocerLexema(ArrayList<Transicion> trans, String lexema){
+        int ascii = 0;
+        int ascii1 = 0;
+        int ascii2 = 0;
+        String id="";
+        char caracter = 0;
+        int i = 0;
+        int j = 0;
+        int k = 0;
+        int l = 0;
+        while(j<trans.size()){
+            if(i < lexema.length()-1){
+                caracter =lexema.charAt(i);
+                k = 0;
+                while(k<trans.get(j).futuro.size()){
+                    id = trans.get(j).futuro.get(k).getId();
+                    if(id.contains("~") && id.length() == 3){
+                        ascii = caracter;
+                        ascii1 = id.charAt(0);
+                        ascii2 = id.charAt(2);
+                        if(ascii1 <= ascii || ascii<=ascii2){
+                            j = trans.get(j).futuro.get(k).getEstado();
+                            i++;
+                            break;                        
+                        }
+                    }else if(id.contains(",") && id.length() > 2){
+                        l = 0;
+                        while(l<id.length()){
+                            if(caracter == id.charAt(l)){
+                                j = trans.get(j).futuro.get(k).getEstado();
+                                i++;
+                                break;  
+                            }
+                            l += 2;
+                        }
+                    }else {
+                        l = 0;
+                        while(l<id.length()){
+                            if(caracter == id.charAt(l)){
+                                i++;
+                                caracter = lexema.charAt(i);
+                                j = trans.get(j).futuro.get(k).getEstado();
+                            }
+                            l++;
+                        }
+                    }
+                    k++;
+                }
+                if(k == trans.get(j).futuro.size()) return "El lexema " + lexema + " NO ES VALIDO";
+            }else {
+                if(trans.get(j).isAcepta()) return "El lexema " + lexema + " ES VALIDO";
+            }
+        }
+        return "El lexema " + lexema + "ES VALIDO";
+    }
 }

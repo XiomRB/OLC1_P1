@@ -44,8 +44,6 @@ public class Ventana extends javax.swing.JFrame {
         jFormattedTextField1 = new javax.swing.JFormattedTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtxtconsola = new javax.swing.JTextArea();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jtimg = new javax.swing.JTree();
         jScrollPane3 = new javax.swing.JScrollPane();
         jtxterror = new javax.swing.JTextArea();
         btanalizar = new javax.swing.JButton();
@@ -67,8 +65,6 @@ public class Ventana extends javax.swing.JFrame {
         jtxtconsola.setColumns(20);
         jtxtconsola.setRows(5);
         jScrollPane1.setViewportView(jtxtconsola);
-
-        jScrollPane2.setViewportView(jtimg);
 
         jtxterror.setColumns(20);
         jtxterror.setRows(5);
@@ -133,17 +129,14 @@ public class Ventana extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 657, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 448, Short.MAX_VALUE)
-                        .addGap(27, 27, 27)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btanalizar)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnlimpiar)))
-                        .addGap(13, 13, 13)))
+                        .addComponent(jScrollPane1)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btanalizar, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnlimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(26, 26, 26)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -152,11 +145,10 @@ public class Ventana extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(14, 14, 14)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btanalizar)
-                            .addComponent(btnlimpiar)))
+                        .addGap(62, 62, 62)
+                        .addComponent(btanalizar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(37, 37, 37)
+                        .addComponent(btnlimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
@@ -187,7 +179,7 @@ public class Ventana extends javax.swing.JFrame {
         String graf="";
         if(!analizador.error){
             analisis =  sintac.obtenerDatos(analizador.tokens);
-            jtxterror.setText(analisis);
+            jtxterror.setText(analisis + "\n");
             Conjunto conj = new Conjunto("", "");
             DefExpresion def = new DefExpresion("", 0);
             ArrayList<ArrayList> tabla = new ArrayList();
@@ -212,6 +204,13 @@ public class Ventana extends javax.swing.JFrame {
                         arch.generarGrafica(graf, cad + "Transiciones",cad);
                         graf = trans.crearAFD(sintac.transiciones);
                         arch.generarGrafica(graf, cad + "AFD", cad);
+                        for (int j = 0; j < sintac.expre.size() ; j++) { 
+                            for (int k = 0; k < sintac.expresion.size(); k++) {
+                                if(sintac.expresion.get(k).id.equalsIgnoreCase(sintac.expre.get(j).toString())){
+                                    jtxterror.setText(jtxterror.getText() + "Expresion: " + sintac.expresion.get(k).id + ": " + trans.reconocerLexema(sintac.transiciones, sintac.expresion.get(k).exp) + "\n");
+                                }
+                            }
+                        }
                     }
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(null, ex.getMessage());
@@ -279,9 +278,7 @@ public class Ventana extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTree jtimg;
     private javax.swing.JTextArea jtxtconsola;
     private javax.swing.JTextArea jtxterror;
     // End of variables declaration//GEN-END:variables
