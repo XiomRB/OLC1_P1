@@ -31,11 +31,11 @@ public class Archivo {
         return texto;
     }
     
-    public void generarGrafica(String cont,String nombre) throws IOException 
+    public void generarGrafica(String cont,String nombre,String carpeta) throws IOException 
     {        
         String dotPath = "C:\\Program Files (x86)\\Graphviz2.38\\bin\\dot.exe";        
-        String direccionSalida = "C:\\Users\\OLGA BARRIOS\\Desktop\\GraficasOLC1P1\\ "+ nombre + ".png";
-        String direccionEntrada = "C:\\Users\\OLGA BARRIOS\\Desktop\\GraficasOLC1P1\\" + nombre + ".dot";
+        String direccionSalida = "C:\\Users\\OLGA BARRIOS\\Desktop\\GraficasOLC1P1\\" + carpeta + "\\" + nombre + ".png";
+        String direccionEntrada = "C:\\Users\\OLGA BARRIOS\\Desktop\\GraficasOLC1P1\\" + crearCarpeta(carpeta) + "\\" + nombre + ".dot";
         
         String cadena = "digraph G{\n" + cont + "}";
         cadena = cadena.replace("\"\"","\"");
@@ -54,5 +54,15 @@ public class Archivo {
               cmd[4] = direccionSalida;
               Runtime rt = Runtime.getRuntime();
               rt.exec( cmd );
+    }
+    
+    public String crearCarpeta(String carpeta){
+        File directorio = new File("C:/Users/OLGA BARRIOS/Desktop/GraficasOLC1P1/" + carpeta);
+        if (!directorio.exists()) {
+            if (directorio.mkdirs()) {
+                return carpeta;
+            }
+        }
+        return carpeta;
     }
 }

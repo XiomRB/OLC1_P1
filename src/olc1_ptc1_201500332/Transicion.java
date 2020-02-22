@@ -116,7 +116,6 @@ public class Transicion {
     public String dibujarTransicion(ArrayList<Transicion> trans, ArrayList<Siguiente> h){
         String cadena = "node1 [shape = plaintext label=< \n <table border='1' cellborder='1' cellspacing = '0'>";
         ArrayList<ArrayList> tabla = darTabla(h, trans);
-       //System.out.println(tabla.get(0).toString());
         cadena = cadena + "<tr> <td rowspan=\"2\">Estado</td><td colspan = \"" + tabla.get(0).size() + "\">Terminales</td></tr><tr>";
         for (int i = 0; i < tabla.get(0).size(); i++) {
             cadena = cadena + "<td>" + tabla.get(0).get(i) + "</td>";
@@ -185,5 +184,39 @@ public class Transicion {
             else i++;
         }
         return encontrado;
+    }
+    
+    public String crearAFD(ArrayList<Transicion> trans){
+        String cadena = "rankdir = LR;\n node [shape = circle];\n";
+        String label = "";
+        for (int i = 0; i < trans.size(); i++) {
+            cadena = cadena + "S" + trans.get(i).getId();
+            if (!trans.get(i).isAcepta()) cadena = cadena + " ; \n";
+            else cadena = cadena + " [shape = doublecircle]; \n";
+        }
+        for (int i = 0; i < trans.size(); i++) {          
+            for (int j = 0; j < trans.get(i).futuro.size(); j++) {
+                label = trans.get(i).futuro.get(j).getId();
+                if (!trans.get(i).futuro.get(j).encontrado) {
+                    cadena = cadena +"S"+trans.get(i).getId() + " -> " +"S" + trans.get(i).futuro.get(j).getEstado() + " [label = \"" + label + estadoRep(trans.get(i).futuro, trans.get(i).futuro.get(j), j) + "\" ]; \n";                   
+                }
+            }
+        }
+        return cadena;
+    }
+    
+    public String estadoRep(ArrayList<PasoTransicion> fut,PasoTransicion f,int j){
+        String cadena = "";
+        j++;
+        while(j<fut.size()){
+            if(!fut.get(j).encontrado){
+                if(f.getEstado()==fut.get(j).getEstado()){
+                    cadena += " | " + fut.get(j).getId();
+                    fut.get(j).encontrado = true;
+                }
+            }
+            j++;
+        }
+        return cadena;
     }
 }

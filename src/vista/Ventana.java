@@ -184,31 +184,34 @@ public class Ventana extends javax.swing.JFrame {
 
     private void btanalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btanalizarActionPerformed
         String analisis = analizador.analizar(jtxtconsola);
-        String grafconj = "";
-        String grafexp = "";
-        String grafsig = "";
-        String graftrans = "";
+        String graf="";
         if(!analizador.error){
             analisis =  sintac.obtenerDatos(analizador.tokens);
             jtxterror.setText(analisis);
             Conjunto conj = new Conjunto("", "");
             DefExpresion def = new DefExpresion("", 0);
+            ArrayList<ArrayList> tabla = new ArrayList();
+            String cad = "";
             if(!sintac.mal){
-                grafconj = conj.imprimirConjuntos(sintac.conjunto);
+                graf = conj.imprimirConjuntos(sintac.conjunto);
                 def.terminarPosiciones(sintac.defexpresion);
                 try {
-                    arch.generarGrafica(grafconj,"Conjuntos");
+                    arch.generarGrafica(graf,"Conjuntos","Conjs");
                     for (int i = 0; i < sintac.defexpresion.size(); i++) {
                         sintac.transiciones.clear();
-                        grafexp = def.dibujarExpresion(sintac.defexpresion.get(i));
-                        arch.generarGrafica(grafexp, sintac.expre.get(i).toString());
+                        tabla.clear();
+                        cad = sintac.expre.get(i).toString();
+                        graf = def.dibujarExpresion(sintac.defexpresion.get(i));
+                        arch.generarGrafica(graf, cad,cad);
                         siguiente.darSiguienteRaiz(sintac.defexpresion.get(i),sintac.defexpresion.get(i).hojas);
-                        grafsig = siguiente.dibujarSiguientes(sintac.defexpresion.get(i).hojas);
-                        arch.generarGrafica(grafsig, sintac.expre.get(i).toString() + " Sigs");
+                        graf = siguiente.dibujarSiguientes(sintac.defexpresion.get(i).hojas);
+                        arch.generarGrafica(graf, cad + "Sigs",cad);
                         sintac.transiciones = trans.darEstado(sintac.defexpresion.get(i));
                         trans.darTransicion(sintac.transiciones, sintac.defexpresion.get(i).hojas);
-                        graftrans = trans.dibujarTransicion(sintac.transiciones, sintac.defexpresion.get(i).hojas);
-                        arch.generarGrafica(graftrans, sintac.expre.get(i) + "Transiciones");
+                        graf = trans.dibujarTransicion(sintac.transiciones, sintac.defexpresion.get(i).hojas);
+                        arch.generarGrafica(graf, cad + "Transiciones",cad);
+                        graf = trans.crearAFD(sintac.transiciones);
+                        arch.generarGrafica(graf, cad + "AFD", cad);
                     }
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(null, ex.getMessage());
